@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "opspilot"
+version = "0.1.0"
+description = "Reliable agentic automation for enterprise operations"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+    "fastapi>=0.116,<1",
+    "httpx>=0.28,<1",
+    "pydantic-settings>=2.10,<3",
+    "psycopg[binary]>=3.2,<4",
+    "sqlalchemy>=2.0.41,<3",
+    "uvicorn>=0.35,<1",
+]
+
+[dependency-groups]
+dev = [
+    "alembic>=1.16,<2",
+    "mypy>=1.16,<2",
+    "pytest>=8.4,<10",
+    "pytest-asyncio>=1.0,<2",
+    "ruff>=0.12,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opspilot"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "migrations"]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ASYNC", "B", "E4", "E7", "E9", "F", "I", "RUF", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests", "migrations"]
+plugins = ["pydantic.mypy"]
+strict = true
+warn_unreachable = true
+
